@@ -1,0 +1,175 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ */
+/*  Base layer                                                         */
+/* ------------------------------------------------------------------ */
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  * {
+    @apply border-surface-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Offset anchored scroll targets so the sticky navbar never covers them. */
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    @apply bg-background text-text-primary font-sans antialiased;
+    background-color: #050816;
+    /* Faint static aurora wash so the page never reads as flat black. */
+    background-image:
+      radial-gradient(60rem 60rem at 12% -10%, rgba(123, 97, 255, 0.16), transparent 60%),
+      radial-gradient(50rem 50rem at 110% 10%, rgba(0, 245, 255, 0.12), transparent 55%);
+    overflow-x: hidden;
+  }
+
+  /* Custom scrollbar tuned to the dark theme. */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #050816;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #00f5ff, #7b61ff);
+    border-radius: 9999px;
+    border: 2px solid #050816;
+  }
+
+  ::selection {
+    background: rgba(0, 245, 255, 0.25);
+    color: #ffffff;
+  }
+
+  /* ---- Custom cursor ------------------------------------------------ */
+  /* Hide the OS cursor only while our custom cursor is active (desktop,
+     motion allowed). Keyboard focus rings are unaffected. */
+  html.custom-cursor-active,
+  html.custom-cursor-active * {
+    cursor: none !important;
+  }
+
+  /* The trailing ring slowly pulses its border between cyan and violet. */
+  .cursor-ring {
+    border-color: #00f5ff;
+    animation: cursor-hue 4s ease-in-out infinite;
+  }
+  @keyframes cursor-hue {
+    0%,
+    100% {
+      border-color: #00f5ff;
+      box-shadow: 0 0 12px rgba(0, 245, 255, 0.35);
+    }
+    50% {
+      border-color: #7b61ff;
+      box-shadow: 0 0 12px rgba(123, 97, 255, 0.35);
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Reusable component utilities                                       */
+/* ------------------------------------------------------------------ */
+@layer components {
+  /* Translucent glass surface used by cards, navbar and panels. */
+  .glass {
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
+
+  /* Gradient clipped text for headings and highlights. */
+  .text-gradient {
+    @apply bg-gradient-brand bg-clip-text text-transparent;
+    background-size: 200% 200%;
+  }
+
+  .text-gradient-mint {
+    @apply bg-gradient-mint bg-clip-text text-transparent;
+  }
+
+  /* Animated gradient border wrapper (use .gradient-border > inner). */
+  .gradient-border {
+    position: relative;
+    border-radius: 1.25rem;
+  }
+  .gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(120deg, rgba(0, 245, 255, 0.6), rgba(123, 97, 255, 0.6));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Soft inner light hitting the top edge of glass panels. */
+  .glass-highlight::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0) 35%);
+    pointer-events: none;
+  }
+
+  /* Slowly rotating conic gradient border, revealed on hover. */
+  .conic-border {
+    position: relative;
+  }
+  .conic-border::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(from 0deg, #00f5ff, #7b61ff, #00ffb3, #00f5ff);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    animation: spin-slow 6s linear infinite;
+  }
+  .conic-border:hover::before {
+    opacity: 1;
+  }
+
+  /* Film-grain / noise overlay applied site-wide for a less "flat digital" feel. */
+  .grain-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.04;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Accessibility — honour reduced-motion across the whole site        */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
