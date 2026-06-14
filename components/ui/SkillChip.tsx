@@ -35,7 +35,7 @@ export function SkillChip({ skill }: { skill: Skill }) {
         onMouseMove={handleMove}
         onMouseLeave={() => setTilt({ rx: 0, ry: 0 })}
         style={{ transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)` }}
-        className="glass group flex items-center gap-3 rounded-xl px-4 py-3 transition-[box-shadow,border-color] duration-300 will-change-transform hover:border-primary/40 hover:shadow-glow-primary"
+        className="group flex items-center gap-3 rounded-xl border border-surface-border bg-white/[0.04] px-4 py-3 transition-[box-shadow,border-color] duration-300 will-change-transform hover:border-primary/40 hover:shadow-glow-primary"
       >
         <span className="font-medium text-text-primary">{skill.name}</span>
         <span

@@ -98,7 +98,7 @@ export function ParticleBackground({ density = 1, className }: ParticleBackgroun
         ctx!.fill();
 
         // Connecting lines to a few following neighbours.
-        for (let j = i + 1; j < Math.min(i + 6, particles.length); j++) {
+        for (let j = i + 1; j < Math.min(i + 4, particles.length); j++) {
           const q = particles[j];
           const d = Math.hypot(p.x - q.x, p.y - q.y);
           if (d < 110) {
@@ -125,20 +125,44 @@ export function ParticleBackground({ density = 1, className }: ParticleBackgroun
       mouse.x = -9999;
       mouse.y = -9999;
     }
-    function onVisibility() {
-      if (document.hidden) cancelAnimationFrame(raf);
-      else raf = requestAnimationFrame(tick);
+
+    // Pause/resume so the canvas only animates while on-screen AND tab-visible.
+    let onScreen = true;
+    function pause() {
+      if (raf) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
     }
+    function resume() {
+      if (!raf && onScreen && !document.hidden) raf = requestAnimationFrame(tick);
+    }
+    function onVisibility() {
+      if (document.hidden) pause();
+      else resume();
+    }
+
+    // Stop work entirely once the hero scrolls out of view (big scroll win).
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        onScreen = entry.isIntersecting;
+        if (onScreen) resume();
+        else pause();
+      },
+      { threshold: 0 },
+    );
 
     resize();
     raf = requestAnimationFrame(tick);
+    io.observe(canvas);
     window.addEventListener("resize", resize);
-    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mousemove", onMove, { passive: true });
     canvas.addEventListener("mouseleave", onLeave);
     document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
-      cancelAnimationFrame(raf);
+      pause();
+      io.disconnect();
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", onMove);
       canvas.removeEventListener("mouseleave", onLeave);

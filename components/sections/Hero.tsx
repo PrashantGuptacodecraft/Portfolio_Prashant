@@ -1,11 +1,9 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
-import { useEffect } from "react";
 import { profile, socials } from "@/lib/data";
 import { AnimatedText } from "@/components/ui/AnimatedText";
-import { AuroraBackground } from "@/components/ui/AuroraBackground";
 import { ParticleBackground } from "@/components/ui/ParticleBackground";
 import { GradientButton } from "@/components/ui/GradientButton";
 import { TiltCard } from "@/components/ui/TiltCard";
@@ -16,47 +14,22 @@ import { ArrowDownIcon, DownloadIcon } from "@/components/ui/Icons";
 /**
  * Full-viewport hero:
  *  - particle field + aurora blobs background,
- *  - mouse-following radial glow,
  *  - typing role cycler, gradient name, CTAs,
  *  - glass-framed avatar with an orbiting glow ring,
  *  - bouncing scroll indicator.
+ *
+ * The cursor-following glow is provided globally by <SpotlightBackground> — the
+ * hero no longer renders its own (which previously repainted the full viewport
+ * every frame).
  */
 export function Hero() {
-  // Mouse-following glow (spring-smoothed for a premium feel).
-  const mx = useMotionValue(0.5);
-  const my = useMotionValue(0.5);
-  const sx = useSpring(mx, { stiffness: 60, damping: 20 });
-  const sy = useSpring(my, { stiffness: 60, damping: 20 });
-  const glowX = useTransform(sx, (v) => `${v * 100}%`);
-  const glowY = useTransform(sy, (v) => `${v * 100}%`);
-  // Smoothed radial glow that tracks the cursor across the hero.
-  const glowBackground = useTransform(
-    [glowX, glowY],
-    ([x, y]) => `radial-gradient(40rem 40rem at ${x} ${y}, rgba(0,245,255,0.12), transparent 60%)`,
-  );
-
-  useEffect(() => {
-    const onMove = (e: MouseEvent) => {
-      mx.set(e.clientX / window.innerWidth);
-      my.set(e.clientY / window.innerHeight);
-    };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [mx, my]);
-
   return (
     <section
       id="top"
       className="relative flex min-h-screen items-center overflow-hidden px-5 pt-24"
     >
-      {/* Layered backgrounds */}
-      <AuroraBackground />
-      <ParticleBackground density={1.8} />
-      <motion.div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{ background: glowBackground }}
-      />
+      {/* Layered backgrounds (aurora blobs come from the global SpotlightBackground) */}
+      <ParticleBackground density={1.3} />
 
       <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[1.3fr_1fr]">
         {/* Left: copy */}
