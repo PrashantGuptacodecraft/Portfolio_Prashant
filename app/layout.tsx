@@ -5,6 +5,7 @@ import { CustomCursor } from "@/components/ui/CustomCursor";
 import { SpotlightBackground } from "@/components/ui/SpotlightBackground";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { KeyboardShortcuts } from "@/components/ui/KeyboardShortcuts";
+import { FluidCursor } from "@/components/effects/FluidCursor";
 import "./globals.css";
 
 /* Fonts wired to the CSS variables consumed by tailwind.config.ts. */
@@ -77,6 +78,8 @@ export default function RootLayout({
         <ScrollProgress />
         {/* Global ambient light + drifting auroras behind every section. */}
         <SpotlightBackground />
+        {/* WebGL fluid cursor (persists across sections; toggled from the navbar). */}
+        <FluidCursor />
         {children}
         {/* Desktop-only custom cursor (no-op on touch / reduced-motion). */}
         <CustomCursor />

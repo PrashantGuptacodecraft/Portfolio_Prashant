@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
 import { useEffect, useState } from "react";
 import { usePointerFine } from "@/lib/hooks/usePointerFine";
+import { useFluidEnabled } from "@/lib/hooks/useFluidEnabled";
 
 type Variant = "default" | "interactive" | "text" | "label";
 
@@ -21,6 +22,9 @@ type Variant = "default" | "interactive" | "text" | "label";
  */
 export function CustomCursor() {
   const enabled = usePointerFine();
+  // When the fluid effect is on, it becomes the primary visual — so we drop the
+  // trailing ring and keep only the precise dot so the two don't compete.
+  const [fluidOn] = useFluidEnabled();
 
   // Dot tracks precisely; ring trails with spring lag.
   const dotX = useMotionValue(-100);
@@ -98,38 +102,41 @@ export function CustomCursor() {
   return (
     <div className="pointer-events-none fixed inset-0 z-[200]" aria-hidden="true">
       {/* Trailing ring / morphing label */}
-      <motion.div
-        className="absolute left-0 top-0"
-        style={{ x: ringX, y: ringY, opacity: visible ? 1 : 0 }}
-      >
-        <AnimatePresence mode="popLayout">
-          {variant === "label" ? (
-            <motion.div
-              key="label"
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.5, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              className="-translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-brand px-4 py-1.5 text-xs font-semibold text-background shadow-glow-primary"
-            >
-              {label}
-            </motion.div>
-          ) : (
-            <motion.div
-              key="ring"
-              className="cursor-ring -translate-x-1/2 -translate-y-1/2 rounded-full border"
-              animate={{
-                width: variant === "text" ? 4 : ringSize,
-                height: ringHeight,
-                opacity: variant === "interactive" ? 1 : 0.8,
-                backgroundColor:
-                  variant === "interactive" ? "rgba(0,245,255,0.10)" : "rgba(0,0,0,0)",
-              }}
-              transition={{ type: "spring", stiffness: 300, damping: 22 }}
-            />
-          )}
-        </AnimatePresence>
-      </motion.div>
+      {/* Trailing ring / morphing label — hidden while the fluid effect leads. */}
+      {!fluidOn && (
+        <motion.div
+          className="absolute left-0 top-0"
+          style={{ x: ringX, y: ringY, opacity: visible ? 1 : 0 }}
+        >
+          <AnimatePresence mode="popLayout">
+            {variant === "label" ? (
+              <motion.div
+                key="label"
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.5, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                className="-translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-brand px-4 py-1.5 text-xs font-semibold text-background shadow-glow-primary"
+              >
+                {label}
+              </motion.div>
+            ) : (
+              <motion.div
+                key="ring"
+                className="cursor-ring -translate-x-1/2 -translate-y-1/2 rounded-full border"
+                animate={{
+                  width: variant === "text" ? 4 : ringSize,
+                  height: ringHeight,
+                  opacity: variant === "interactive" ? 1 : 0.8,
+                  backgroundColor:
+                    variant === "interactive" ? "rgba(0,245,255,0.10)" : "rgba(0,0,0,0)",
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 22 }}
+              />
+            )}
+          </AnimatePresence>
+        </motion.div>
+      )}
 
       {/* Precise dot */}
       <motion.div

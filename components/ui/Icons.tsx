@@ -115,6 +115,16 @@ export function SparkIcon(props: IconProps) {
   );
 }
 
+/** Water droplet — used for the fluid-cursor toggle. */
+export function DropletIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M12 3.2c3 3.4 6 6.4 6 9.8a6 6 0 0 1-12 0c0-3.4 3-6.4 6-9.8Z" />
+      <path d="M9.5 14a2.5 2.5 0 0 0 2.5 2.5" />
+    </svg>
+  );
+}
+
 /** Picks the right social glyph from a data-driven key. */
 export function SocialIcon({ icon, ...props }: { icon: string } & IconProps) {
   switch (icon) {
