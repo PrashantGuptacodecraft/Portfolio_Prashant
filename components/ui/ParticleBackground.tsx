@@ -49,7 +49,8 @@ export function ParticleBackground({ density = 1, className }: ParticleBackgroun
       ctx!.scale(dpr, dpr);
 
       // Particle count scales with area, density and screen size.
-      const base = isMobile ? 26 : 70;
+      // Reduced from 70 → 50 desktop, 26 → 20 mobile for smoother perf.
+      const base = isMobile ? 20 : 50;
       const count = Math.round(base * density * Math.min(1.4, (width * height) / (1440 * 900)));
       particles = Array.from({ length: count }, () => ({
         x: Math.random() * width,
@@ -58,6 +59,14 @@ export function ParticleBackground({ density = 1, className }: ParticleBackgroun
         vy: (Math.random() - 0.5) * 0.3,
         r: Math.random() * 1.6 + 0.6,
       }));
+    }
+
+    // Debounced resize — avoids rebuilding particle array on every pixel of a
+    // window drag. 300ms settle time is imperceptible to the user.
+    let resizeTimer = 0;
+    function onResize() {
+      clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(resize, 300);
     }
 
     function tick() {
@@ -155,15 +164,16 @@ export function ParticleBackground({ density = 1, className }: ParticleBackgroun
     resize();
     raf = requestAnimationFrame(tick);
     io.observe(canvas);
-    window.addEventListener("resize", resize);
+    window.addEventListener("resize", onResize);
     window.addEventListener("mousemove", onMove, { passive: true });
     canvas.addEventListener("mouseleave", onLeave);
     document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       pause();
+      clearTimeout(resizeTimer);
       io.disconnect();
-      window.removeEventListener("resize", resize);
+      window.removeEventListener("resize", onResize);
       window.removeEventListener("mousemove", onMove);
       canvas.removeEventListener("mouseleave", onLeave);
       document.removeEventListener("visibilitychange", onVisibility);

@@ -13,9 +13,10 @@ export function AuroraBackground({ className }: { className?: string }) {
       aria-hidden="true"
       className={cn("pointer-events-none absolute inset-0 overflow-hidden", className)}
     >
-      <div className="absolute -left-24 top-[-10%] h-72 w-72 rounded-full bg-secondary/30 blur-[110px] animate-blob-drift" />
-      <div className="absolute right-[-6%] top-1/4 h-80 w-80 rounded-full bg-primary/25 blur-[120px] animate-blob-drift [animation-delay:-6s]" />
-      <div className="absolute bottom-[-10%] left-1/3 h-72 w-72 rounded-full bg-accent/20 blur-[120px] animate-blob-drift [animation-delay:-12s]" />
+      {/* blur reduced 110px→70px, will-change-transform promotes to own GPU layer */}
+      <div className="absolute -left-24 top-[-10%] h-72 w-72 rounded-full bg-secondary/30 blur-[70px] animate-blob-drift will-change-transform" />
+      <div className="absolute right-[-6%] top-1/4 h-80 w-80 rounded-full bg-primary/25 blur-[80px] animate-blob-drift [animation-delay:-6s] will-change-transform" />
+      <div className="absolute bottom-[-10%] left-1/3 h-72 w-72 rounded-full bg-accent/20 blur-[80px] animate-blob-drift [animation-delay:-12s] will-change-transform" />
     </div>
   );
 }

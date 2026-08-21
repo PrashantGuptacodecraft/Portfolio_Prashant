@@ -17,8 +17,8 @@ export function Projects() {
       <SectionTint color="violet" />
       <SectionHeading
         eyebrow="03 — Projects"
-        title="Things I've shipped"
-        subtitle="Real, working products — voice assistants, automation platforms and full-stack apps. Code is on GitHub; live demos are linked where available."
+        title="Things I've built"
+        subtitle="Flagship personal projects — voice assistants, AI agents and automation platforms. Freelance client work is in the next section."
       />
 
       <motion.div

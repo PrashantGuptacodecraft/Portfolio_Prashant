@@ -11,6 +11,9 @@ import { Projects } from "@/components/sections/Projects";
  * small. They're client components, so we render them on the client only as
  * they're needed during scroll.
  */
+const Freelance = dynamic(() =>
+  import("@/components/sections/Freelance").then((m) => m.Freelance),
+);
 const Experience = dynamic(() =>
   import("@/components/sections/Experience").then((m) => m.Experience),
 );
@@ -34,6 +37,7 @@ export default function Home() {
         <About />
         <Skills />
         <Projects />
+        <Freelance />
         <Experience />
         <GithubStats />
         <Contact />

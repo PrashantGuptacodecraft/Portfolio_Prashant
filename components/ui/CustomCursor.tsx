@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePointerFine } from "@/lib/hooks/usePointerFine";
 import { useFluidEnabled } from "@/lib/hooks/useFluidEnabled";
 
@@ -37,6 +37,11 @@ export function CustomCursor() {
   const [visible, setVisible] = useState(false);
   const [pressed, setPressed] = useState(false);
 
+  // Refs for the latest variant/label so the event handler can read them
+  // without stale closures — avoids calling setState when value is unchanged.
+  const variantRef = useRef<Variant>("default");
+  const labelRef = useRef("");
+
   useEffect(() => {
     if (!enabled) return;
 
@@ -53,24 +58,31 @@ export function CustomCursor() {
         "a, button, [data-cursor], input, textarea, select, [role='button']",
       );
 
-      if (!hit) {
-        setVariant("default");
-        setLabel("");
-        return;
+      let newVariant: Variant = "default";
+      let newLabel = "";
+
+      if (hit) {
+        const mode = hit.getAttribute("data-cursor");
+        const labelText = hit.getAttribute("data-cursor-label");
+
+        if (labelText) {
+          newVariant = "label";
+          newLabel = labelText;
+        } else if (mode === "text" || hit.tagName === "INPUT" || hit.tagName === "TEXTAREA") {
+          newVariant = "text";
+        } else {
+          newVariant = "interactive";
+        }
       }
 
-      const mode = hit.getAttribute("data-cursor");
-      const labelText = hit.getAttribute("data-cursor-label");
-
-      if (labelText) {
-        setVariant("label");
-        setLabel(labelText);
-      } else if (mode === "text" || hit.tagName === "INPUT" || hit.tagName === "TEXTAREA") {
-        setVariant("text");
-        setLabel("");
-      } else {
-        setVariant("interactive");
-        setLabel("");
+      // Only trigger re-render if values actually changed.
+      if (newVariant !== variantRef.current) {
+        variantRef.current = newVariant;
+        setVariant(newVariant);
+      }
+      if (newLabel !== labelRef.current) {
+        labelRef.current = newLabel;
+        setLabel(newLabel);
       }
     };
 

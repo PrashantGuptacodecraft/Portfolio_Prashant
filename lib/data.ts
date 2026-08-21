@@ -176,6 +176,7 @@ export type Project = {
   demo: string; // "#" when no live URL exists — never fabricate one.
   /** Drives the abstract auto-generated card visual + glow tint. */
   visual: "cyan" | "violet" | "mint";
+  featured?: boolean;
 };
 
 export const projects: Project[] = [
@@ -202,9 +203,22 @@ export const projects: Project[] = [
       "React dashboard for LinkedIn/Gmail auth, candidate profiles, resume uploads and live activity tracking.",
       "Express REST APIs with rate-limited bulk delivery, contact enrichment, logging and robust error handling.",
     ],
-    github: "#",
+    github: "https://github.com/PrashantGuptacodecraft/Linkedapply-pro",
     demo: "#",
     visual: "violet",
+  },
+  {
+    title: "Autonomous AI Creator",
+    hook: "Advanced autonomous AI agent that creates, iterates and ships content end-to-end without human intervention.",
+    tech: ["Python", "LLMs", "Multi-Agent", "Automation", "AI APIs"],
+    highlights: [
+      "Fully autonomous multi-agent pipeline that researches, drafts, reviews and publishes content with zero manual steps.",
+      "Advanced reasoning and self-correction loop — agents critique each other's outputs and iterate until quality thresholds are met.",
+      "Modular creator architecture: swap in different LLMs, content types or distribution channels without changing the core pipeline.",
+    ],
+    github: "https://github.com/PrashantGuptacodecraft/autonomous-ai-creator-advanced",
+    demo: "#",
+    visual: "mint",
   },
   {
     title: "Eventra",
@@ -217,7 +231,7 @@ export const projects: Project[] = [
     ],
     github: "https://github.com/PrashantGuptacodecraft/Eventra",
     demo: "#",
-    visual: "mint",
+    visual: "cyan",
   },
   {
     title: "Grocify",
@@ -229,7 +243,7 @@ export const projects: Project[] = [
     ],
     github: "https://github.com/PrashantGuptacodecraft/Grocify",
     demo: "#",
-    visual: "cyan",
+    visual: "violet",
   },
   {
     title: "Wall-Calendar",
@@ -241,7 +255,87 @@ export const projects: Project[] = [
     ],
     github: "https://github.com/PrashantGuptacodecraft/Wall-Calendar",
     demo: "#",
+    visual: "mint",
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Freelance Projects                                                 */
+/* ------------------------------------------------------------------ */
+export type FreelanceProject = {
+  title: string;
+  category: string;
+  hook: string;
+  tech: string[];
+  github: string;
+  /** Live Vercel preview — "#" when not public (e.g. security reasons). */
+  demo: string;
+  visual: "cyan" | "violet" | "mint";
+};
+
+export const freelanceProjects: FreelanceProject[] = [
+  {
+    title: "Doctor Platform",
+    category: "Healthcare",
+    hook: "Full-stack doctor consultation and appointment management platform.",
+    tech: ["React", "Node.js", "Express", "MongoDB"],
+    github: "https://github.com/PrashantGuptacodecraft/Doctor",
+    demo: "https://doctor-khaki-nu.vercel.app/",
+    visual: "cyan",
+  },
+  {
+    title: "IOCL Lorry Gate Management",
+    category: "Enterprise",
+    hook: "Gate entry, lorry tracking and management system for IOCL fuel depots.",
+    tech: ["React", "Node.js", "Express", "MySQL"],
+    github: "https://github.com/PrashantGuptacodecraft/IOCL_Lorry_Gate_Management",
+    demo: "https://iocl-lorry-gate-management-producti-wheat.vercel.app/dashboard",
     visual: "violet",
+  },
+  {
+    title: "Jemzo Hotels Platform",
+    category: "Hospitality",
+    hook: "Premium hotel booking and management platform with room inventory and reservations.",
+    tech: ["React", "Node.js", "Express", "MongoDB"],
+    github: "https://github.com/PrashantGuptacodecraft/jemzo-hotels-platform-v2",
+    demo: "https://jemzo-hotels-platform-v2-pq18.vercel.app/",
+    visual: "mint",
+  },
+  {
+    title: "Grill Cafe Premium",
+    category: "Food & Beverage",
+    hook: "Premium café website with menu management, table booking and online ordering.",
+    tech: ["React", "Tailwind CSS", "Node.js"],
+    github: "https://github.com/PrashantGuptacodecraft/Grill_cafe-premium",
+    demo: "https://grillcafe.vercel.app/",
+    visual: "cyan",
+  },
+  {
+    title: "Hotel Management System",
+    category: "Hospitality",
+    hook: "Full-featured hotel management system for check-in, check-out and billing.",
+    tech: ["React", "Node.js", "Express", "MongoDB"],
+    github: "https://github.com/PrashantGuptacodecraft/hotel",
+    demo: "#",
+    visual: "violet",
+  },
+  {
+    title: "E-Commerce Platform",
+    category: "Retail",
+    hook: "Scalable e-commerce platform with product catalog, cart, orders and payments.",
+    tech: ["React", "Redux", "Node.js", "Express", "MongoDB"],
+    github: "https://github.com/PrashantGuptacodecraft/ecommerce-platform",
+    demo: "https://ecommerce-platform-jet-nu.vercel.app/",
+    visual: "mint",
+  },
+  {
+    title: "Road Milling Rental",
+    category: "Construction",
+    hook: "Equipment rental platform for road milling machines with booking and fleet management.",
+    tech: ["React", "Node.js", "Express", "MongoDB"],
+    github: "https://github.com/PrashantGuptacodecraft/road-milling-rental",
+    demo: "https://road-milling-rental.vercel.app/",
+    visual: "cyan",
   },
 ];
 
@@ -256,6 +350,20 @@ export type TimelineEntry = {
 };
 
 export const timeline: TimelineEntry[] = [
+  {
+    title: "Full Stack Developer Intern — SN Verse Software Solution",
+    meta: "Internship · Bilaspur, CG · July 2026 – August 2026",
+    description:
+      "Working as a Full Stack Developer Intern at SN Verse Software Solution (Ref: SNV/INT/2026/061). Involved in frontend development using modern web technologies, backend development and API integration, database design and management, and collaboration on live production projects.",
+    tag: "work",
+  },
+  {
+    title: "Freelance Full-Stack Developer",
+    meta: "Freelancing · 7 client projects delivered",
+    description:
+      "Delivered 7 end-to-end client projects spanning healthcare, enterprise (IOCL), hospitality, food & beverage, e-commerce and construction. Built complete full-stack solutions from requirements to deployment.",
+    tag: "work",
+  },
   {
     title: "Web Developer — JP IT Staffing",
     meta: "Internship · US-based company · Present",
@@ -307,6 +415,7 @@ export const navLinks = [
   { label: "About", href: "#about" },
   { label: "Skills", href: "#skills" },
   { label: "Projects", href: "#projects" },
+  { label: "Freelance", href: "#freelance" },
   { label: "Experience", href: "#experience" },
   { label: "Contact", href: "#contact" },
 ] as const;

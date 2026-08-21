@@ -29,14 +29,14 @@ import { useFluidEnabled } from "@/lib/hooks/useFluidEnabled";
  *  TUNING CONSTANTS — tweak these first if it feels too intense / too subtle.
  * ========================================================================== */
 const SIM_RESOLUTION = 128; // velocity/pressure grid (lower = cheaper, blurrier)
-const DYE_RESOLUTION = 512; // color grid (desktop)
-const DYE_RESOLUTION_MOBILE = 256; // color grid (touch / small screens)
+const DYE_RESOLUTION = 256; // color grid (desktop) — was 512, halved for perf
+const DYE_RESOLUTION_MOBILE = 128; // color grid (touch / small screens) — was 256
 const DENSITY_DISSIPATION = 0.97; // how fast color fades (lower = fades faster)
 const VELOCITY_DISSIPATION = 0.98; // how fast motion settles
 const PRESSURE = 0.8; // pressure retained between frames
-const PRESSURE_ITERATIONS = 20; // Jacobi solver iterations
+const PRESSURE_ITERATIONS = 10; // Jacobi solver iterations — was 20, halved for perf
 const CURL = 18; // vorticity (swirl) strength — subtle
-const SPLAT_RADIUS = 0.2; // size of each injected blob (% of min dimension)
+const SPLAT_RADIUS = 0.25; // size of each injected blob — was 0.2, slightly larger
 const SPLAT_FORCE = 6000; // velocity injected per pointer move
 const SHADING = true; // 3D-ish shaded display pass
 const MAX_DPR = 1.5; // cap device-pixel-ratio for performance
@@ -597,8 +597,12 @@ export function FluidCursor() {
       blit(null);
     }
 
-    // ---- Resize --------------------------------------------------------------
-    function resize() {
+    // ---- Resize (dirty-flag — NOT called every frame) -----------------------
+    // We only rebuild framebuffers when the canvas pixel dimensions truly change.
+    // Calling resize() inside the RAF loop was a major perf bottleneck.
+    let resizePending = false;
+    function scheduleResize() { resizePending = true; }
+    function applyResize() {
       const w = scaleByPixelRatio(canvas!.clientWidth);
       const h = scaleByPixelRatio(canvas!.clientHeight);
       if (canvas!.width !== w || canvas!.height !== h) {
@@ -606,6 +610,7 @@ export function FluidCursor() {
         canvas!.height = h;
         initFramebuffers();
       }
+      resizePending = false;
     }
 
     // ---- Main loop (start/stop controlled by the enabled effect) ------------
@@ -629,7 +634,8 @@ export function FluidCursor() {
         hueCursor += COLOR_UPDATE_SPEED * 0.001;
       }
 
-      resize();
+      // Only rebuild framebuffers when window has actually resized.
+      if (resizePending) applyResize();
       applyInputs();
       step(dt);
       render();
@@ -663,8 +669,10 @@ export function FluidCursor() {
       let p = pointers.get(e.pointerId);
       if (!p) {
         p = newPointer(e.pointerId);
-        p.texcoordX = (e.clientX - canvas!.getBoundingClientRect().left) / canvas!.clientWidth;
-        p.texcoordY = 1 - (e.clientY - canvas!.getBoundingClientRect().top) / canvas!.clientHeight;
+        // Cache rect once — was calling getBoundingClientRect() twice (perf fix).
+        const rect = canvas!.getBoundingClientRect();
+        p.texcoordX = (e.clientX - rect.left) / canvas!.clientWidth;
+        p.texcoordY = 1 - (e.clientY - rect.top) / canvas!.clientHeight;
         pointers.set(e.pointerId, p);
       }
       const { x, y } = pointerPos(e);
@@ -681,7 +689,8 @@ export function FluidCursor() {
     }
 
     initFramebuffers();
-    resize();
+    applyResize(); // initial sizing (replaces old resize())
+    window.addEventListener("resize", scheduleResize, { passive: true });
     window.addEventListener("pointermove", onPointerMove, { passive: true });
     window.addEventListener("pointerup", onPointerUp, { passive: true });
     window.addEventListener("pointercancel", onPointerUp, { passive: true });
@@ -694,6 +703,7 @@ export function FluidCursor() {
     return () => {
       stop();
       controlRef.current = null;
+      window.removeEventListener("resize", scheduleResize);
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", onPointerUp);
       window.removeEventListener("pointercancel", onPointerUp);
