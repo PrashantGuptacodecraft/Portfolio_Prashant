@@ -22,7 +22,7 @@
 // trails tint the content — keeping everything readable. pointer-events-none
 // throughout so it never blocks clicks/hover.
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFluidEnabled } from "@/lib/hooks/useFluidEnabled";
 
 /* ============================================================================
@@ -99,6 +99,7 @@ function nextColor(): RGB {
  * ========================================================================== */
 export function FluidCursor() {
   const [enabled] = useFluidEnabled();
+  const [hasInitialized, setHasInitialized] = useState(enabled);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // Lets the persistent RAF loop see the latest `enabled` without re-init.
   const enabledRef = useRef(enabled);
@@ -107,6 +108,8 @@ export function FluidCursor() {
   // Keep the loop's view of `enabled` current + drive fade and start/stop.
   useEffect(() => {
     enabledRef.current = enabled;
+    if (enabled) setHasInitialized(true);
+    
     const canvas = canvasRef.current;
     if (canvas) canvas.style.opacity = enabled ? "1" : "0";
 
@@ -120,6 +123,7 @@ export function FluidCursor() {
 
   // One-time WebGL setup.
   useEffect(() => {
+    if (!hasInitialized) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -601,11 +605,27 @@ export function FluidCursor() {
     // We only rebuild framebuffers when the canvas pixel dimensions truly change.
     // Calling resize() inside the RAF loop was a major perf bottleneck.
     let resizePending = false;
-    function scheduleResize() { resizePending = true; }
+    let resizeTimer = 0;
+    
+    // Debounce the resize so mobile URL bar changes don't trigger WebGL recreation
+    // on every single pixel of scroll.
+    function scheduleResize() { 
+      clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        resizePending = true;
+      }, 300);
+    }
+
     function applyResize() {
       const w = scaleByPixelRatio(canvas!.clientWidth);
       const h = scaleByPixelRatio(canvas!.clientHeight);
-      if (canvas!.width !== w || canvas!.height !== h) {
+      
+      // On mobile, ignore small vertical height changes (URL bar collapsing) 
+      // to avoid expensive framebuffer rebuilds while scrolling.
+      const widthChanged = canvas!.width !== w;
+      const heightChanged = Math.abs(canvas!.height - h) > 100;
+      
+      if (widthChanged || heightChanged) {
         canvas!.width = w;
         canvas!.height = h;
         initFramebuffers();
@@ -716,7 +736,7 @@ export function FluidCursor() {
       console.warn("[FluidCursor] initialisation failed; effect disabled:", err);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [hasInitialized]);
 
   return (
     <canvas
