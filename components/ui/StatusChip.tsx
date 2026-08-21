@@ -33,7 +33,7 @@ export function StatusChip() {
         <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
       </span>
       <span className="font-mono">
-        {time ? `${time} IST` : "— IST"} · Ghaziabad
+        {time ? `${time} IST` : "— IST"} · Delhi-NCR
       </span>
     </span>
   );

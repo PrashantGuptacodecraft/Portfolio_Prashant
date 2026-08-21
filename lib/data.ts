@@ -12,7 +12,7 @@ export const profile = {
   name: "Prashant Gupta",
   initials: "PG",
   tagline: "Full-Stack Developer | AI & Automation Builder | Problem Solver",
-  location: "Ghaziabad, India",
+  location: "Delhi-NCR, India",
   email: "adityagupta983869@gmail.com",
   // Drop a real PDF at /public/resume/Prashant_Gupta_Resume.pdf to enable downloads.
   resumeUrl: "/resume/Prashant_Gupta_Resume.pdf",
@@ -82,7 +82,7 @@ export type Stat = {
 
 export const stats: Stat[] = [
   { label: "Education", value: "B.Tech CSE", hint: "KIET • 2024–2028" },
-  { label: "Based in", value: "Ghaziabad, IN", hint: "Open to remote & relocation" },
+  { label: "Based in", value: "Delhi-NCR, IN", hint: "Open to remote & relocation" },
   { label: "Focus", value: "AI + Automation", hint: "Full-stack, end-to-end builds" },
   { label: "LeetCode", value: "400+ solved", hint: "Strong DSA fundamentals" },
 ];
