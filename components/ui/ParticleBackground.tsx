@@ -39,6 +39,8 @@ export function ParticleBackground({ density = 1, className }: ParticleBackgroun
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    if (isMobile) return; // Completely disable canvas particles on mobile for maximum performance.
+    
     const colors = ["#00F5FF", "#7B61FF", "#00FFB3"];
 
     function resize() {
@@ -48,10 +50,7 @@ export function ParticleBackground({ density = 1, className }: ParticleBackgroun
       canvas!.height = height * dpr;
       ctx!.scale(dpr, dpr);
 
-      // Particle count scales with area, density and screen size.
-      // Reduced from 70 → 50 desktop, 26 → 20 mobile for smoother perf.
-      const base = isMobile ? 20 : 50;
-      const count = Math.round(base * density * Math.min(1.4, (width * height) / (1440 * 900)));
+      const count = Math.round(50 * density * Math.min(1.4, (width * height) / (1440 * 900)));
       particles = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,

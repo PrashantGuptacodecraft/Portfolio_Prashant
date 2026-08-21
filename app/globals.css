@@ -85,6 +85,15 @@
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
   }
+  
+  /* Disable expensive glass blur on mobile */
+  @media (max-width: 768px) {
+    .glass {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      background-color: rgba(15, 18, 30, 0.6); /* Slightly more opaque to compensate for missing blur */
+    }
+  }
 
   /* Gradient clipped text for headings and highlights. */
   .text-gradient {
@@ -141,9 +150,11 @@
     opacity: 0;
     transition: opacity 0.4s ease;
     animation: spin-slow 6s linear infinite;
+    animation-play-state: paused;
   }
   .conic-border:hover::before {
     opacity: 1;
+    animation-play-state: running;
   }
 
   /* Film-grain / noise overlay applied site-wide for a less "flat digital" feel. */

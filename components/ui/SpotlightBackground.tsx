@@ -48,15 +48,15 @@ export function SpotlightBackground() {
       {/* Drifting aurora blobs with subtle parallax.
           blur radius halved on mobile for GPU compositor perf. */}
       <motion.div
-        className="absolute -left-32 top-[-12%] h-[28rem] w-[28rem] rounded-full bg-secondary/20 blur-[40px] md:blur-[80px] animate-blob-drift will-change-transform"
+        className="absolute -left-32 top-[-12%] h-[28rem] w-[28rem] rounded-full bg-secondary/20 blur-[40px] md:blur-[80px] animate-blob-drift max-md:animate-none will-change-transform"
         style={enabled ? { x: px, y: py } : undefined}
       />
       <motion.div
-        className="absolute right-[-12%] top-1/3 h-[26rem] w-[26rem] rounded-full bg-primary/15 blur-[45px] md:blur-[90px] animate-blob-drift [animation-delay:-7s] will-change-transform"
+        className="absolute right-[-12%] top-1/3 h-[26rem] w-[26rem] rounded-full bg-primary/15 blur-[45px] md:blur-[90px] animate-blob-drift max-md:animate-none [animation-delay:-7s] will-change-transform"
         style={enabled ? { x: pxInv, y: py } : undefined}
       />
       <motion.div
-        className="absolute bottom-[-15%] left-1/3 h-[24rem] w-[24rem] rounded-full bg-accent/15 blur-[45px] md:blur-[90px] animate-blob-drift [animation-delay:-13s] will-change-transform"
+        className="absolute bottom-[-15%] left-1/3 h-[24rem] w-[24rem] rounded-full bg-accent/15 blur-[45px] md:blur-[90px] animate-blob-drift max-md:animate-none [animation-delay:-13s] will-change-transform"
         style={enabled ? { x: px, y: pyInv } : undefined}
       />
     </div>
