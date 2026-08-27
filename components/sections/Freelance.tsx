@@ -6,7 +6,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { SectionTint } from "@/components/ui/SectionTint";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { CodeIcon, ExternalIcon } from "@/components/ui/Icons";
-import { staggerContainer, fadeUp, viewportOnce } from "@/lib/utils";
+import { staggerContainer, fadeUp, scaleIn, viewportOnce } from "@/lib/utils";
 
 /**
  * Freelance section — compact grid of client projects.
@@ -42,7 +42,7 @@ export function Freelance() {
         ].map((stat) => (
           <motion.div
             key={stat.label}
-            variants={fadeUp}
+            variants={scaleIn}
             className="glass rounded-2xl px-6 py-4 text-center"
           >
             <p className="font-display text-2xl font-bold text-gradient">

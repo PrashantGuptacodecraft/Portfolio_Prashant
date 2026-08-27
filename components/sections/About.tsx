@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { about, stats } from "@/lib/data";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { GlassCard } from "@/components/ui/GlassCard";
-import { fadeUp, staggerContainer, viewportOnce } from "@/lib/utils";
+import { fadeLeft, scaleIn, staggerContainer, viewportOnce } from "@/lib/utils";
 
 /**
  * About: two-column layout — narrative on the left, animated stat cards on the
@@ -31,7 +31,7 @@ export function About() {
           {about.paragraphs.map((p) => (
             <motion.p
               key={p.slice(0, 24)}
-              variants={fadeUp}
+              variants={fadeLeft}
               className="text-base leading-relaxed text-text-muted sm:text-lg"
             >
               {p}
@@ -48,7 +48,7 @@ export function About() {
           className="grid grid-cols-2 gap-4 self-start"
         >
           {stats.map((s) => (
-            <GlassCard key={s.label} variants={fadeUp} bordered hoverLift className="conic-border glass-highlight p-5">
+            <GlassCard key={s.label} variants={scaleIn} bordered hoverLift className="conic-border glass-highlight p-5">
               <p className="font-mono text-[11px] uppercase tracking-wider text-primary">
                 {s.label}
               </p>

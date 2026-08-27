@@ -713,7 +713,7 @@ export function FluidCursor() {
         const touch = e.touches[i];
         let p = pointers.get(touch.identifier);
         if (!p) {
-          p = { ...newPointer(), id: touch.identifier };
+          p = newPointer(touch.identifier);
           const rect = canvas!.getBoundingClientRect();
           p.texcoordX = (touch.clientX - rect.left) / canvas!.clientWidth;
           p.texcoordY = 1 - (touch.clientY - rect.top) / canvas!.clientHeight;

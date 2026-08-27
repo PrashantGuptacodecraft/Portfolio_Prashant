@@ -11,10 +11,10 @@ type SectionHeadingProps = {
   align?: "left" | "center";
 };
 
-// Reveal: fade + slight upward slide + scale-up.
+// Reveal: fade + slight upward slide + scale-up with spring physics.
 const revealParent = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } },
+  visible: { transition: { staggerChildren: 0.12 } },
 };
 const revealChild = {
   hidden: { opacity: 0, y: 22, scale: 0.96 },
@@ -22,14 +22,22 @@ const revealChild = {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { type: "spring" as const, stiffness: 80, damping: 20 },
+  },
+};
+const lineReveal = {
+  hidden: { scaleX: 0, opacity: 0 },
+  visible: {
+    scaleX: 1,
+    opacity: 1,
+    transition: { type: "spring" as const, stiffness: 60, damping: 20, delay: 0.1 },
   },
 };
 
 /**
  * Consistent section header: mono eyebrow, gradient title with a neon-glow
- * duplicate behind it and a one-time shimmer sweep on entry, plus optional
- * subtitle. The title gradient also pans slowly and continuously.
+ * duplicate behind it and a one-time shimmer sweep on entry, plus an animated
+ * gradient divider line and optional subtitle.
  */
 export function SectionHeading({
   eyebrow,
@@ -69,6 +77,13 @@ export function SectionHeading({
           {title}
         </span>
       </motion.h2>
+
+      {/* Animated gradient divider line */}
+      <motion.div
+        variants={lineReveal}
+        className={`mt-4 h-px origin-${align === "center" ? "center" : "left"} bg-gradient-to-r from-transparent via-primary/60 to-transparent`}
+        style={{ originX: align === "center" ? 0.5 : 0 }}
+      />
 
       {subtitle && (
         <motion.p

@@ -107,6 +107,8 @@ export function Contact() {
                 href={s.href}
                 target={s.href.startsWith("http") ? "_blank" : undefined}
                 rel="noopener noreferrer"
+                whileHover={{ y: -3, scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 className="glass group flex items-center gap-4 rounded-2xl p-4 transition-all hover:border-primary/40 hover:shadow-glow-primary"
               >
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-brand-soft text-primary">

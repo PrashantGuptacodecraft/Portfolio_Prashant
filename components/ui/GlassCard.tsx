@@ -27,9 +27,10 @@ export function GlassCard({
       className={cn(
         "glass rounded-2xl shadow-glass",
         bordered && "gradient-border",
-        hoverLift && "transition-transform duration-300 will-change-transform hover:-translate-y-1.5",
         className,
       )}
+      whileHover={hoverLift ? { y: -6 } : undefined}
+      transition={hoverLift ? { type: "spring", stiffness: 300, damping: 20 } : undefined}
       {...props}
     >
       {children}

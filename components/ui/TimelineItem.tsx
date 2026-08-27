@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import type { TimelineEntry } from "@/lib/data";
-import { fadeUp } from "@/lib/utils";
+import { fadeLeft } from "@/lib/utils";
 import { GlassCard } from "./GlassCard";
 
 const tagStyles: Record<TimelineEntry["tag"], string> = {
@@ -27,9 +27,9 @@ const tagLabels: Record<TimelineEntry["tag"], string> = {
  */
 export function TimelineItem({ entry }: { entry: TimelineEntry }) {
   return (
-    <motion.li variants={fadeUp} className="relative pl-12">
+    <motion.li variants={fadeLeft} className="relative pl-12">
       {/* Glowing node dot on the rail */}
-      <span className="absolute left-[10px] top-2 z-10 h-4 w-4 -translate-x-1/2 rounded-full bg-gradient-brand shadow-glow-primary ring-4 ring-background" />
+      <span className="absolute left-[10px] top-2 z-10 h-4 w-4 -translate-x-1/2 rounded-full bg-gradient-brand shadow-glow-primary ring-4 ring-background animate-pulse" />
 
       <GlassCard className="p-5" hoverLift>
         <div className="flex flex-wrap items-center justify-between gap-2">

@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useRef, useState } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useRef } from "react";
 import type { Skill } from "@/lib/data";
 import { cn, fadeUp } from "@/lib/utils";
 
@@ -12,12 +12,15 @@ const levelStyles: Record<Skill["level"], string> = {
 };
 
 /**
- * Animated skill pill with a subtle pointer-reactive 3D tilt and hover glow.
+ * Animated skill pill with a spring-smoothed 3D tilt and hover glow.
  * The proficiency band is shown as a small mono tag rather than a fake %.
  */
 export function SkillChip({ skill }: { skill: Skill }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
+  const rx = useMotionValue(0);
+  const ry = useMotionValue(0);
+  const springRx = useSpring(rx, { stiffness: 200, damping: 20 });
+  const springRy = useSpring(ry, { stiffness: 200, damping: 20 });
 
   function handleMove(e: React.MouseEvent) {
     const el = ref.current;
@@ -25,17 +28,25 @@ export function SkillChip({ skill }: { skill: Skill }) {
     const rect = el.getBoundingClientRect();
     const px = (e.clientX - rect.left) / rect.width - 0.5;
     const py = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ rx: -py * 12, ry: px * 12 });
+    rx.set(-py * 12);
+    ry.set(px * 12);
+  }
+
+  function handleLeave() {
+    rx.set(0);
+    ry.set(0);
   }
 
   return (
     <motion.div variants={fadeUp} style={{ perspective: 600 }}>
-      <div
+      <motion.div
         ref={ref}
         onMouseMove={handleMove}
-        onMouseLeave={() => setTilt({ rx: 0, ry: 0 })}
-        style={{ transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)` }}
-        className="group flex items-center gap-3 rounded-xl border border-surface-border bg-white/[0.04] px-4 py-3 transition-[box-shadow,border-color] duration-300 will-change-transform hover:border-primary/40 hover:shadow-glow-primary"
+        onMouseLeave={handleLeave}
+        style={{ rotateX: springRx, rotateY: springRy }}
+        whileHover={{ scale: 1.03 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        className="group flex items-center gap-3 rounded-xl border border-surface-border bg-white/[0.04] px-4 py-3 transition-[box-shadow,border-color] duration-300 hover:border-primary/40 hover:shadow-glow-primary"
       >
         <span className="font-medium text-text-primary">{skill.name}</span>
         <span
@@ -46,7 +57,7 @@ export function SkillChip({ skill }: { skill: Skill }) {
         >
           {skill.level}
         </span>
-      </div>
+      </motion.div>
     </motion.div>
   );
 }

@@ -27,9 +27,9 @@ export function ProjectVisual({
       style={{ background: `radial-gradient(120% 120% at 20% 0%, ${t.glow}, #070b1c 60%)` }}
       aria-hidden="true"
     >
-      {/* Drifting orb */}
+      {/* Drifting orb — reacts to parent card hover */}
       <div
-        className="absolute -right-10 -top-10 h-40 w-40 rounded-full blur-2xl animate-float"
+        className="absolute -right-10 -top-10 h-40 w-40 rounded-full blur-2xl animate-float transition-transform duration-500 group-hover:scale-125"
         style={{ background: `linear-gradient(120deg, ${t.from}, ${t.to})`, opacity: 0.5 }}
       />
       {/* Faux app window */}

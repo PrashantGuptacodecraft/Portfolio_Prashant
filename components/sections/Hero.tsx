@@ -32,54 +32,79 @@ export function Hero() {
       <ParticleBackground density={1.3} />
 
       <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[1.3fr_1fr]">
-        {/* Left: copy */}
+        {/* Left: copy — elements cascade in with staggered springs */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          initial="hidden"
+          animate="visible"
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.15, delayChildren: 0.1 } } }}
         >
-          <div className="mb-5 flex flex-wrap items-center gap-3">
+          <motion.div
+            className="mb-5 flex flex-wrap items-center gap-3"
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 80, damping: 20 } } }}
+          >
             <span className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-medium text-text-muted">
               <span className="h-2 w-2 animate-pulse rounded-full bg-accent shadow-glow-accent" />
               Available for Full-Stack / SDE roles
             </span>
             <StatusChip />
-          </div>
+          </motion.div>
 
-          <p className="mb-3 font-mono text-sm text-primary">Hi, I&apos;m</p>
-          <h1 data-cursor="text" className="relative font-display text-hero font-bold leading-none">
+          <motion.p
+            className="mb-3 font-mono text-sm text-primary"
+            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 80, damping: 20 } } }}
+          >
+            Hi, I&apos;m
+          </motion.p>
+
+          <motion.h1
+            data-cursor="text"
+            className="relative font-display text-hero font-bold leading-none"
+            variants={{ hidden: { opacity: 0, y: 24, filter: "blur(8px)" }, visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { type: "spring", stiffness: 70, damping: 20 } } }}
+          >
             {/* Neon-sign glow duplicate behind the name. */}
             <span aria-hidden="true" className="text-gradient absolute inset-0 select-none blur-[22px] opacity-60">
               {profile.name}
             </span>
             <span className="text-gradient animate-gradient-pan relative">{profile.name}</span>
-          </h1>
+          </motion.h1>
 
           {/* Typing role cycler */}
-          <div className="mt-4 h-8 font-display text-xl font-semibold text-text-primary sm:text-2xl">
+          <motion.div
+            className="mt-4 h-8 font-display text-xl font-semibold text-text-primary sm:text-2xl"
+            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 80, damping: 20 } } }}
+          >
             <AnimatedText phrases={[...profile.roles]} />
-          </div>
+          </motion.div>
 
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-text-muted sm:text-lg">
+          <motion.p
+            className="mt-6 max-w-xl text-base leading-relaxed text-text-muted sm:text-lg"
+            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 80, damping: 20 } } }}
+          >
             {profile.valueProposition}
-          </p>
+          </motion.p>
 
           {/* CTAs */}
-          <div className="mt-8 flex flex-wrap items-center gap-4">
+          <motion.div
+            className="mt-8 flex flex-wrap items-center gap-4"
+            variants={{ hidden: { opacity: 0, y: 16, scale: 0.95 }, visible: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 100, damping: 18 } } }}
+          >
             <GradientButton as="a" href="#projects">
               View Projects
             </GradientButton>
             <GradientButton as="a" href={profile.resumeUrl} download variant="outline">
               <DownloadIcon className="h-4 w-4" /> Download Resume
             </GradientButton>
-          </div>
+          </motion.div>
 
           {/* Social row */}
-          <div className="mt-8 flex items-center gap-4">
+          <motion.div
+            className="mt-8 flex items-center gap-4"
+            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 80, damping: 20 } } }}
+          >
             {socials.map((s) => (
               <SocialButton key={s.label} social={s} />
             ))}
-          </div>
+          </motion.div>
         </motion.div>
 
         {/* Right: glass-framed avatar with orbit ring + perspective tilt */}
