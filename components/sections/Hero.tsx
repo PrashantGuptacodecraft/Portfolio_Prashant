@@ -32,15 +32,15 @@ export function Hero() {
       <ParticleBackground density={1.3} />
 
       <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[1.3fr_1fr]">
-        {/* Left: copy — elements cascade in with staggered springs */}
+        {/* Left: copy — elements cascade in VERY fast so it feels snappy */}
         <motion.div
           initial="hidden"
           animate="visible"
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.15, delayChildren: 0.1 } } }}
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.05, delayChildren: 0 } } }}
         >
           <motion.div
             className="mb-5 flex flex-wrap items-center gap-3"
-            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 80, damping: 20 } } }}
+            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } } }}
           >
             <span className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-medium text-text-muted">
               <span className="h-2 w-2 animate-pulse rounded-full bg-accent shadow-glow-accent" />
@@ -51,7 +51,7 @@ export function Hero() {
 
           <motion.p
             className="mb-3 font-mono text-sm text-primary"
-            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 80, damping: 20 } } }}
+            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } } }}
           >
             Hi, I&apos;m
           </motion.p>
@@ -59,7 +59,7 @@ export function Hero() {
           <motion.h1
             data-cursor="text"
             className="relative font-display text-hero font-bold leading-none"
-            variants={{ hidden: { opacity: 0, y: 24, filter: "blur(8px)" }, visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { type: "spring", stiffness: 70, damping: 20 } } }}
+            variants={{ hidden: { opacity: 0, y: 16, filter: "blur(4px)" }, visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.4, ease: "easeOut" } } }}
           >
             {/* Neon-sign glow duplicate behind the name. */}
             <span aria-hidden="true" className="text-gradient absolute inset-0 select-none blur-[22px] opacity-60">
@@ -71,14 +71,14 @@ export function Hero() {
           {/* Typing role cycler */}
           <motion.div
             className="mt-4 h-8 font-display text-xl font-semibold text-text-primary sm:text-2xl"
-            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 80, damping: 20 } } }}
+            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } } }}
           >
             <AnimatedText phrases={[...profile.roles]} />
           </motion.div>
 
           <motion.p
             className="mt-6 max-w-xl text-base leading-relaxed text-text-muted sm:text-lg"
-            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 80, damping: 20 } } }}
+            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } } }}
           >
             {profile.valueProposition}
           </motion.p>
@@ -86,7 +86,7 @@ export function Hero() {
           {/* CTAs */}
           <motion.div
             className="mt-8 flex flex-wrap items-center gap-4"
-            variants={{ hidden: { opacity: 0, y: 16, scale: 0.95 }, visible: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 100, damping: 18 } } }}
+            variants={{ hidden: { opacity: 0, y: 12, scale: 0.96 }, visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.3, ease: "easeOut" } } }}
           >
             <GradientButton as="a" href="#projects">
               View Projects
@@ -99,7 +99,7 @@ export function Hero() {
           {/* Social row */}
           <motion.div
             className="mt-8 flex items-center gap-4"
-            variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 80, damping: 20 } } }}
+            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } } }}
           >
             {socials.map((s) => (
               <SocialButton key={s.label} social={s} />

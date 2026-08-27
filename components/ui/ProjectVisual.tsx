@@ -29,7 +29,7 @@ export function ProjectVisual({
     >
       {/* Drifting orb — reacts to parent card hover */}
       <div
-        className="absolute -right-10 -top-10 h-40 w-40 rounded-full blur-2xl animate-float transition-transform duration-500 group-hover:scale-125"
+        className="absolute -right-10 -top-10 h-40 w-40 rounded-full blur-2xl animate-float max-md:animate-none transition-transform duration-500 group-hover:scale-125"
         style={{ background: `linear-gradient(120deg, ${t.from}, ${t.to})`, opacity: 0.5 }}
       />
       {/* Faux app window */}

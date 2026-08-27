@@ -11,18 +11,18 @@ type SectionHeadingProps = {
   align?: "left" | "center";
 };
 
-// Reveal: fade + slight upward slide + scale-up with spring physics.
+// Reveal: fast fade + slight upward slide + scale-up.
 const revealParent = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.12 } },
+  visible: { transition: { staggerChildren: 0.05 } },
 };
 const revealChild = {
-  hidden: { opacity: 0, y: 22, scale: 0.96 },
+  hidden: { opacity: 0, y: 16, scale: 0.96 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { type: "spring" as const, stiffness: 80, damping: 20 },
+    transition: { duration: 0.4, ease: "easeOut" },
   },
 };
 const lineReveal = {
@@ -30,7 +30,7 @@ const lineReveal = {
   visible: {
     scaleX: 1,
     opacity: 1,
-    transition: { type: "spring" as const, stiffness: 60, damping: 20, delay: 0.1 },
+    transition: { duration: 0.5, ease: "easeOut" },
   },
 };
 

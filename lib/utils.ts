@@ -11,43 +11,43 @@ export function cn(...classes: Array<string | false | null | undefined>): string
  * with a slight overshoot that settles gracefully.
  */
 
-/** Classic upward slide-in with spring physics. */
+/** Classic upward slide-in, fast and lightweight. */
 export const fadeUp = {
-  hidden: { opacity: 0, y: 32 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { type: "spring" as const, stiffness: 80, damping: 20 },
+    transition: { duration: 0.4, ease: "easeOut" },
   },
 };
 
 /** Slide in from the left — used for narrative text and timeline items. */
 export const fadeLeft = {
-  hidden: { opacity: 0, x: -36 },
+  hidden: { opacity: 0, x: -20 },
   visible: {
     opacity: 1,
     x: 0,
-    transition: { type: "spring" as const, stiffness: 80, damping: 20 },
+    transition: { duration: 0.4, ease: "easeOut" },
   },
 };
 
 /** Slide in from the right — pairs with fadeLeft for converging layouts. */
 export const fadeRight = {
-  hidden: { opacity: 0, x: 36 },
+  hidden: { opacity: 0, x: 20 },
   visible: {
     opacity: 1,
     x: 0,
-    transition: { type: "spring" as const, stiffness: 80, damping: 20 },
+    transition: { duration: 0.4, ease: "easeOut" },
   },
 };
 
 /** Pop-in scale effect — punchy reveal for stat cards and badges. */
 export const scaleIn = {
-  hidden: { opacity: 0, scale: 0.85 },
+  hidden: { opacity: 0, scale: 0.9 },
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { type: "spring" as const, stiffness: 100, damping: 18 },
+    transition: { duration: 0.3, ease: "easeOut" },
   },
 };
 
@@ -55,7 +55,7 @@ export const scaleIn = {
 export const staggerContainer = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.15, delayChildren: 0.05 },
+    transition: { staggerChildren: 0.05, delayChildren: 0 },
   },
 };
 
@@ -63,9 +63,13 @@ export const staggerContainer = {
 export const staggerFast = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.08, delayChildren: 0.02 },
+    transition: { staggerChildren: 0.02, delayChildren: 0 },
   },
 };
 
-/** Standard viewport config so reveals fire once, slightly before fully in view. */
-export const viewportOnce = { once: true, amount: 0.2 } as const;
+/** 
+ * Trigger reveals 200px BEFORE they enter the viewport.
+ * This guarantees elements are already visible by the time the user scrolls
+ * to them, completely eliminating the "invisible lag" on fast mobile scrolling.
+ */
+export const viewportOnce = { once: true, amount: 0, margin: "200px" } as const;

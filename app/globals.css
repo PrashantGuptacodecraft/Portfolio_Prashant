@@ -169,6 +169,27 @@
 }
 
 /* ------------------------------------------------------------------ */
+/*  Mobile Performance Overrides                                       */
+/* ------------------------------------------------------------------ */
+@media (max-width: 768px) {
+  /* Force hardware acceleration on commonly animated/scrolled elements */
+  .glass, .gradient-border {
+    transform: translateZ(0);
+    will-change: auto; /* Clear will-change to save VRAM */
+  }
+
+  /* Aggressively disable complex filters and glows on mobile */
+  .shadow-glow-primary,
+  .shadow-glow-secondary,
+  .shadow-glow-accent,
+  .hover\:shadow-glow-primary:hover,
+  .hover\:shadow-glow-secondary:hover,
+  .hover\:shadow-glow-accent:hover {
+    box-shadow: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /*  Accessibility — honour reduced-motion across the whole site        */
 /* ------------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
