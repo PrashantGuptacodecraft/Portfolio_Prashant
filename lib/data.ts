@@ -12,7 +12,7 @@ export const profile = {
   name: "Prashant Gupta",
   initials: "PG",
   tagline: "Full-Stack Developer | AI & Automation Builder | Problem Solver",
-  location: "Delhi-NCR, India",
+  location: "Delhi NCR, India",
   email: "adityagupta983869@gmail.com",
   // Drop a real PDF at /public/resume/Prashant_Gupta_Resume.pdf to enable downloads.
   resumeUrl: "/resume/Prashant_Gupta_Resume.pdf",
@@ -68,7 +68,7 @@ export const githubUsername = "PrashantGuptacodecraft";
 /* ------------------------------------------------------------------ */
 export const about = {
   paragraphs: [
-    "I'm a second-year Computer Science Engineering student at KIET Group of Institutions who builds real, working software — not toy projects. My work ranges from a multimodal voice assistant to full-stack recruiter-outreach automation platforms powered by Playwright and browser automation.",
+    "I'm a third-year Computer Science Engineering student at KIET Group of Institutions who builds real, working software — not toy projects. My work ranges from a multimodal voice assistant to full-stack recruiter-outreach automation platforms powered by Playwright and browser automation.",
     "Self-taught well beyond my coursework, I ship products end-to-end: frontend, backend, and the automation glue in between. I'm obsessed with the moment a tedious manual workflow collapses into a single, elegant automated system.",
     "My goal is a Full-Stack / SDE role at the intersection of AI, automation, and clean UI — where shipping fast and shipping well aren't a trade-off.",
   ],
@@ -82,7 +82,7 @@ export type Stat = {
 
 export const stats: Stat[] = [
   { label: "Education", value: "B.Tech CSE", hint: "KIET • 2024–2028" },
-  { label: "Based in", value: "Delhi-NCR, IN", hint: "Open to remote & relocation" },
+  { label: "Based in", value: "Delhi NCR, IN", hint: "Open to remote & relocation" },
   { label: "Focus", value: "AI + Automation", hint: "Full-stack, end-to-end builds" },
   { label: "LeetCode", value: "400+ solved", hint: "Strong DSA fundamentals" },
 ];

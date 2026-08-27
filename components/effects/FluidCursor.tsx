@@ -126,7 +126,6 @@ export function FluidCursor() {
     if (!hasInitialized) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     try {
       // ---- Context + extensions ------------------------------------------------
@@ -708,12 +707,39 @@ export function FluidCursor() {
       else if (enabledRef.current) start();
     }
 
+    function onTouchMove(e: TouchEvent) {
+      if (!enabledRef.current) return;
+      for (let i = 0; i < e.touches.length; i++) {
+        const touch = e.touches[i];
+        let p = pointers.get(touch.identifier);
+        if (!p) {
+          p = { ...newPointer(), id: touch.identifier };
+          const rect = canvas!.getBoundingClientRect();
+          p.texcoordX = (touch.clientX - rect.left) / canvas!.clientWidth;
+          p.texcoordY = 1 - (touch.clientY - rect.top) / canvas!.clientHeight;
+          pointers.set(touch.identifier, p);
+        }
+        const { x, y } = pointerPos(touch);
+        updatePointerMove(p, x, y);
+        p.color = nextColor();
+      }
+    }
+
+    function onTouchEnd(e: TouchEvent) {
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        pointers.delete(e.changedTouches[i].identifier);
+      }
+    }
+
     initFramebuffers();
     applyResize(); // initial sizing (replaces old resize())
     window.addEventListener("resize", scheduleResize, { passive: true });
     window.addEventListener("pointermove", onPointerMove, { passive: true });
     window.addEventListener("pointerup", onPointerUp, { passive: true });
     window.addEventListener("pointercancel", onPointerUp, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
+    window.addEventListener("touchcancel", onTouchEnd, { passive: true });
     document.addEventListener("visibilitychange", onVisibility);
 
     // Start immediately if already enabled at mount.
@@ -727,6 +753,9 @@ export function FluidCursor() {
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", onPointerUp);
       window.removeEventListener("pointercancel", onPointerUp);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("touchcancel", onTouchEnd);
       document.removeEventListener("visibilitychange", onVisibility);
       const lose = gl.getExtension("WEBGL_lose_context");
       lose?.loseContext();
