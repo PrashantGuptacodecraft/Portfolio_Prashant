@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { profile, socials } from "@/lib/data";
@@ -10,6 +11,66 @@ import { TiltCard } from "@/components/ui/TiltCard";
 import { SocialButton } from "@/components/ui/SocialButton";
 import { StatusChip } from "@/components/ui/StatusChip";
 import { ArrowDownIcon, DownloadIcon } from "@/components/ui/Icons";
+
+/**
+ * Scroll-aware hero video: uses Intersection Observer to lazy-load and
+ * play/pause the video based on visibility. Prevents the "flash" that
+ * occurred during fast scrolling by fading the video in only after it
+ * can actually play, and pausing it when out of view.
+ */
+function HeroVideo() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [canPlay, setCanPlay] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.1 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Play when visible, pause when scrolled away.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (isVisible) {
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  }, [isVisible]);
+
+  const handleCanPlay = useCallback(() => setCanPlay(true), []);
+
+  return (
+    <div
+      ref={containerRef}
+      className="absolute inset-0 z-0 pointer-events-none"
+      style={{ willChange: "transform" }}
+    >
+      <video
+        ref={videoRef}
+        muted
+        loop
+        playsInline
+        preload="none"
+        onCanPlay={handleCanPlay}
+        className="h-full w-full object-cover mix-blend-screen transition-opacity duration-700 ease-out"
+        style={{ opacity: isVisible && canPlay ? 0.25 : 0 }}
+      >
+        <source src="/portfolio_video.mp4" type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#050816]" />
+    </div>
+  );
+}
 
 /**
  * Full-viewport hero:
@@ -28,19 +89,8 @@ export function Hero() {
       id="top"
       className="relative flex min-h-screen items-center overflow-hidden px-5 pt-24"
     >
-      {/* 3D Background Video */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="h-full w-full object-cover opacity-[0.25] mix-blend-screen"
-        >
-          <source src="/portfolio_video.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#050816] z-0" />
-      </div>
+      {/* 3D Background Video — lazy-loaded, scroll-aware */}
+      <HeroVideo />
 
       {/* Layered backgrounds (aurora blobs come from the global SpotlightBackground) */}
       <ParticleBackground density={1.3} />

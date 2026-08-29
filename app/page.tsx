@@ -32,22 +32,15 @@ export default function Home() {
     <>
       <Loader />
       <Navbar />
-      <main className="relative">
-        {/* Sticky Hero Background */}
-        <div className="sticky top-0 z-0 h-screen overflow-hidden">
-          <Hero />
-        </div>
-        
-        {/* Foreground Content that scrolls over the Hero */}
-        <div className="relative z-10 bg-background">
-          <About />
-          <Skills />
-          <Projects />
-          <Freelance />
-          <Experience />
-          <GithubStats />
-          <Contact />
-        </div>
+      <main>
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <Freelance />
+        <Experience />
+        <GithubStats />
+        <Contact />
       </main>
       <Footer />
     </>
