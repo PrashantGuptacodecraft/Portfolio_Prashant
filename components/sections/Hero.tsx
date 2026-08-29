@@ -28,88 +28,113 @@ export function Hero() {
       id="top"
       className="relative flex min-h-screen items-center overflow-hidden px-5 pt-24"
     >
+      {/* 3D Background Video */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="h-full w-full object-cover opacity-[0.25] mix-blend-screen"
+        >
+          <source src="/portfolio_video.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#050816] z-0" />
+      </div>
+
       {/* Layered backgrounds (aurora blobs come from the global SpotlightBackground) */}
       <ParticleBackground density={1.3} />
 
-      <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[1.3fr_1fr]">
+      <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[1.3fr_1fr]" style={{ perspective: "1000px" }}>
         {/* Left: copy — elements cascade in VERY fast so it feels snappy */}
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.05, delayChildren: 0 } } }}
-        >
+        <TiltCard max={5} className="w-full">
           <motion.div
-            className="mb-5 flex flex-wrap items-center gap-3"
-            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } } }}
+            initial="hidden"
+            animate="visible"
+            style={{ transformStyle: "preserve-3d", transform: "translateZ(30px)" }}
+            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.05, delayChildren: 0 } } }}
           >
-            <span className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-medium text-text-muted">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-accent shadow-glow-accent" />
-              Available for Full-Stack / SDE roles
-            </span>
-            <StatusChip />
+            <motion.div
+              className="mb-5 flex flex-wrap items-center gap-3"
+              style={{ transform: "translateZ(40px)" }}
+              variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } } }}
+            >
+              <span className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-medium text-text-muted">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-accent shadow-glow-accent" />
+                Available for Full-Stack / SDE roles
+              </span>
+              <StatusChip />
+            </motion.div>
+
+            <motion.p
+              className="mb-3 font-mono text-sm text-primary"
+              style={{ transform: "translateZ(45px)" }}
+              variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } } }}
+            >
+              Hi, I&apos;m
+            </motion.p>
+
+            <motion.h1
+              data-cursor="text"
+              className="relative font-display text-hero font-bold leading-none"
+              style={{ transform: "translateZ(60px)" }}
+              variants={{ hidden: { opacity: 0, y: 16, filter: "blur(4px)" }, visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.4, ease: "easeOut" } } }}
+            >
+              {/* Neon-sign glow duplicate behind the name. */}
+              <span aria-hidden="true" className="text-gradient absolute inset-0 select-none blur-[22px] opacity-60">
+                {profile.name}
+              </span>
+              <span className="text-gradient animate-gradient-pan relative">{profile.name}</span>
+            </motion.h1>
+
+            {/* Typing role cycler */}
+            <motion.div
+              className="mt-4 h-8 font-display text-xl font-semibold text-text-primary sm:text-2xl"
+              style={{ transform: "translateZ(50px)" }}
+              variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } } }}
+            >
+              <AnimatedText phrases={[...profile.roles]} />
+            </motion.div>
+
+            <motion.p
+              className="mt-6 max-w-xl text-base leading-relaxed text-text-muted sm:text-lg"
+              style={{ transform: "translateZ(40px)" }}
+              variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } } }}
+            >
+              {profile.valueProposition}
+            </motion.p>
+
+            {/* CTAs */}
+            <motion.div
+              className="mt-8 flex flex-wrap items-center gap-4"
+              style={{ transform: "translateZ(30px)" }}
+              variants={{ hidden: { opacity: 0, y: 12, scale: 0.96 }, visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.3, ease: "easeOut" } } }}
+            >
+              <GradientButton as="a" href="#projects">
+                View Projects
+              </GradientButton>
+              <GradientButton as="a" href={profile.resumeUrl} download variant="outline">
+                <DownloadIcon className="h-4 w-4" /> Download Resume
+              </GradientButton>
+            </motion.div>
+
+            {/* Social row */}
+            <motion.div
+              className="mt-8 flex items-center gap-4"
+              style={{ transform: "translateZ(20px)" }}
+              variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } } }}
+            >
+              {socials.map((s) => (
+                <SocialButton key={s.label} social={s} />
+              ))}
+            </motion.div>
           </motion.div>
-
-          <motion.p
-            className="mb-3 font-mono text-sm text-primary"
-            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } } }}
-          >
-            Hi, I&apos;m
-          </motion.p>
-
-          <motion.h1
-            data-cursor="text"
-            className="relative font-display text-hero font-bold leading-none"
-            variants={{ hidden: { opacity: 0, y: 16, filter: "blur(4px)" }, visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.4, ease: "easeOut" } } }}
-          >
-            {/* Neon-sign glow duplicate behind the name. */}
-            <span aria-hidden="true" className="text-gradient absolute inset-0 select-none blur-[22px] opacity-60">
-              {profile.name}
-            </span>
-            <span className="text-gradient animate-gradient-pan relative">{profile.name}</span>
-          </motion.h1>
-
-          {/* Typing role cycler */}
-          <motion.div
-            className="mt-4 h-8 font-display text-xl font-semibold text-text-primary sm:text-2xl"
-            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } } }}
-          >
-            <AnimatedText phrases={[...profile.roles]} />
-          </motion.div>
-
-          <motion.p
-            className="mt-6 max-w-xl text-base leading-relaxed text-text-muted sm:text-lg"
-            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } } }}
-          >
-            {profile.valueProposition}
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div
-            className="mt-8 flex flex-wrap items-center gap-4"
-            variants={{ hidden: { opacity: 0, y: 12, scale: 0.96 }, visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.3, ease: "easeOut" } } }}
-          >
-            <GradientButton as="a" href="#projects">
-              View Projects
-            </GradientButton>
-            <GradientButton as="a" href={profile.resumeUrl} download variant="outline">
-              <DownloadIcon className="h-4 w-4" /> Download Resume
-            </GradientButton>
-          </motion.div>
-
-          {/* Social row */}
-          <motion.div
-            className="mt-8 flex items-center gap-4"
-            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } } }}
-          >
-            {socials.map((s) => (
-              <SocialButton key={s.label} social={s} />
-            ))}
-          </motion.div>
-        </motion.div>
+        </TiltCard>
 
         {/* Right: glass-framed avatar with orbit ring + perspective tilt */}
         <motion.div
           className="relative mx-auto hidden aspect-square w-72 lg:block"
+          style={{ transformStyle: "preserve-3d", transform: "translateZ(40px)" }}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
@@ -125,7 +150,7 @@ export function Hero() {
             {/* Avatar core — real photo lifted forward in 3D for parallax depth */}
             <div
               className="glass glass-highlight absolute inset-8 overflow-hidden rounded-full shadow-glass"
-              style={{ transform: "translateZ(55px)" }}
+              style={{ transform: "translateZ(80px)" }}
               data-cursor-label="Hello"
             >
               <Image
