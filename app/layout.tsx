@@ -6,6 +6,7 @@ import { SpotlightBackground } from "@/components/ui/SpotlightBackground";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { KeyboardShortcuts } from "@/components/ui/KeyboardShortcuts";
 import { FluidCursor } from "@/components/effects/FluidCursor";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 /* Fonts wired to the CSS variables consumed by tailwind.config.ts. */
@@ -87,6 +88,8 @@ export default function RootLayout({
         <KeyboardShortcuts />
         {/* Site-wide film grain to soften the flat digital look. */}
         <div className="grain-overlay" aria-hidden="true" />
+        {/* Vercel Web Analytics tracking */}
+        <Analytics />
       </body>
     </html>
   );
