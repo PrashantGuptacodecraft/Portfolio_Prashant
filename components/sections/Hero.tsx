@@ -45,18 +45,18 @@ export function Hero() {
       {/* Layered backgrounds (aurora blobs come from the global SpotlightBackground) */}
       <ParticleBackground density={1.3} />
 
-      <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[1.3fr_1fr]" style={{ perspective: "1000px" }}>
+      <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[1.3fr_1fr]">
         {/* Left: copy — elements cascade in VERY fast so it feels snappy */}
         <TiltCard max={5} className="w-full">
           <motion.div
             initial="hidden"
             animate="visible"
-            style={{ transformStyle: "preserve-3d", transform: "translateZ(30px)" }}
+            style={{ transformStyle: "preserve-3d" }}
             variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.05, delayChildren: 0 } } }}
           >
             <motion.div
               className="mb-5 flex flex-wrap items-center gap-3"
-              style={{ transform: "translateZ(40px)" }}
+              style={{ transform: "translateZ(20px)", transformOrigin: "left center" }}
               variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } } }}
             >
               <span className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs font-medium text-text-muted">
@@ -68,7 +68,7 @@ export function Hero() {
 
             <motion.p
               className="mb-3 font-mono text-sm text-primary"
-              style={{ transform: "translateZ(45px)" }}
+              style={{ transform: "translateZ(25px)", transformOrigin: "left center" }}
               variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } } }}
             >
               Hi, I&apos;m
@@ -77,7 +77,7 @@ export function Hero() {
             <motion.h1
               data-cursor="text"
               className="relative font-display text-hero font-bold leading-none"
-              style={{ transform: "translateZ(60px)" }}
+              style={{ transform: "translateZ(40px)", transformOrigin: "left center" }}
               variants={{ hidden: { opacity: 0, y: 16, filter: "blur(4px)" }, visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.4, ease: "easeOut" } } }}
             >
               {/* Neon-sign glow duplicate behind the name. */}
@@ -90,7 +90,7 @@ export function Hero() {
             {/* Typing role cycler */}
             <motion.div
               className="mt-4 h-8 font-display text-xl font-semibold text-text-primary sm:text-2xl"
-              style={{ transform: "translateZ(50px)" }}
+              style={{ transform: "translateZ(30px)", transformOrigin: "left center" }}
               variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } } }}
             >
               <AnimatedText phrases={[...profile.roles]} />
@@ -98,7 +98,7 @@ export function Hero() {
 
             <motion.p
               className="mt-6 max-w-xl text-base leading-relaxed text-text-muted sm:text-lg"
-              style={{ transform: "translateZ(40px)" }}
+              style={{ transform: "translateZ(20px)", transformOrigin: "left center" }}
               variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } } }}
             >
               {profile.valueProposition}
@@ -107,7 +107,7 @@ export function Hero() {
             {/* CTAs */}
             <motion.div
               className="mt-8 flex flex-wrap items-center gap-4"
-              style={{ transform: "translateZ(30px)" }}
+              style={{ transform: "translateZ(15px)", transformOrigin: "left center" }}
               variants={{ hidden: { opacity: 0, y: 12, scale: 0.96 }, visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.3, ease: "easeOut" } } }}
             >
               <GradientButton as="a" href="#projects">
@@ -121,7 +121,7 @@ export function Hero() {
             {/* Social row */}
             <motion.div
               className="mt-8 flex items-center gap-4"
-              style={{ transform: "translateZ(20px)" }}
+              style={{ transform: "translateZ(10px)", transformOrigin: "left center" }}
               variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } } }}
             >
               {socials.map((s) => (
@@ -134,7 +134,6 @@ export function Hero() {
         {/* Right: glass-framed avatar with orbit ring + perspective tilt */}
         <motion.div
           className="relative mx-auto hidden aspect-square w-72 lg:block"
-          style={{ transformStyle: "preserve-3d", transform: "translateZ(40px)" }}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
