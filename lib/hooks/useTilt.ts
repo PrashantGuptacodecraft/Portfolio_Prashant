@@ -27,8 +27,8 @@ export function useTilt(max = 10): TiltState {
   // Normalised pointer position within the card (0..1), centred at rest.
   const px = useMotionValue(0.5);
   const py = useMotionValue(0.5);
-  const sx = useSpring(px, { stiffness: 150, damping: 18 });
-  const sy = useSpring(py, { stiffness: 150, damping: 18 });
+  const sx = useSpring(px, { stiffness: 100, damping: 22 });
+  const sy = useSpring(py, { stiffness: 100, damping: 22 });
 
   const rotateX = useTransform(sy, [0, 1], [max, -max]);
   const rotateY = useTransform(sx, [0, 1], [-max, max]);

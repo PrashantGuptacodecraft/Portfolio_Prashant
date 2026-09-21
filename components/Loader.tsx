@@ -24,9 +24,9 @@ export function Loader() {
       return;
     }
 
-    // Animate a faux progress bar to 100% in ~1.2s, then dismiss.
+    // Animate a faux progress bar to 100% in ~0.6s, then dismiss.
     const start = performance.now();
-    const duration = 1200;
+    const duration = 600;
     let raf = 0;
 
     const step = (now: number) => {
@@ -36,7 +36,7 @@ export function Loader() {
         raf = requestAnimationFrame(step);
       } else {
         sessionStorage.setItem(SESSION_KEY, "1");
-        setTimeout(() => setDone(true), 250);
+        setDone(true);
       }
     };
     raf = requestAnimationFrame(step);

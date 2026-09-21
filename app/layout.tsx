@@ -1,11 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Sora, Inter, JetBrains_Mono } from "next/font/google";
 import { profile } from "@/lib/data";
-import { CustomCursor } from "@/components/ui/CustomCursor";
-import { SpotlightBackground } from "@/components/ui/SpotlightBackground";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { KeyboardShortcuts } from "@/components/ui/KeyboardShortcuts";
-import { FluidCursor } from "@/components/effects/FluidCursor";
+import { VisualEffects } from "@/components/ui/VisualEffects";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
@@ -77,13 +75,9 @@ export default function RootLayout({
       <body>
         {/* Top scroll-progress indicator. */}
         <ScrollProgress />
-        {/* Global ambient light + drifting auroras behind every section. */}
-        <SpotlightBackground />
-        {/* WebGL fluid cursor (persists across sections; toggled from the navbar). */}
-        <FluidCursor />
+        {/* Visual effects (spotlight, fluid cursor, custom cursor) — lazy-loaded. */}
+        <VisualEffects />
         {children}
-        {/* Desktop-only custom cursor (no-op on touch / reduced-motion). */}
-        <CustomCursor />
         {/* Keyboard shortcuts: "/" focuses contact, "g h" opens GitHub. */}
         <KeyboardShortcuts />
         {/* Site-wide film grain to soften the flat digital look. */}

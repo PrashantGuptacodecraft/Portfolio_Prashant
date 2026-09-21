@@ -15,11 +15,9 @@ import { useSyncExternalStore } from "react";
 const KEY = "fluidCursorEnabled";
 
 function detectDefault(): boolean {
-  if (typeof window === "undefined") return false;
-  const coarse =
-    window.matchMedia("(pointer: coarse)").matches || "ontouchstart" in window;
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  return !coarse && !reduced;
+  // Default to OFF — the WebGL fluid sim is expensive (17+ GPU draw calls/frame).
+  // Users can opt-in via the navbar toggle.
+  return false;
 }
 
 // Module-scope state, initialised once on the client from localStorage.

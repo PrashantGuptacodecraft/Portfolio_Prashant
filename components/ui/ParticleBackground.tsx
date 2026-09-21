@@ -104,21 +104,6 @@ export function ParticleBackground({ density = 1, className }: ParticleBackgroun
         ctx!.fillStyle = colors[i % colors.length];
         ctx!.globalAlpha = 0.5 + proximity * 0.45;
         ctx!.fill();
-
-        // Connecting lines to a few following neighbours.
-        for (let j = i + 1; j < Math.min(i + 4, particles.length); j++) {
-          const q = particles[j];
-          const d = Math.hypot(p.x - q.x, p.y - q.y);
-          if (d < 110) {
-            ctx!.beginPath();
-            ctx!.moveTo(p.x, p.y);
-            ctx!.lineTo(q.x, q.y);
-            ctx!.strokeStyle = colors[i % colors.length];
-            ctx!.globalAlpha = (1 - d / 110) * 0.12;
-            ctx!.lineWidth = 0.6;
-            ctx!.stroke();
-          }
-        }
       }
       ctx!.globalAlpha = 1;
       raf = requestAnimationFrame(tick);
