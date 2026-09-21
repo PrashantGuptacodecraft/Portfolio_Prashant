@@ -6,7 +6,7 @@ import { navLinks, profile } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { GradientButton } from "./ui/GradientButton";
 import { Magnetic } from "./ui/Magnetic";
-import { FluidToggle } from "./ui/FluidToggle";
+import { PerformanceToggle } from "./ui/PerformanceToggle";
 import { CloseIcon, DownloadIcon, MenuIcon } from "./ui/Icons";
 
 /**
@@ -74,7 +74,7 @@ export function Navbar() {
 
         {/* Desktop CTA */}
         <div className="hidden items-center gap-3 md:flex">
-          <FluidToggle />
+          <PerformanceToggle />
           <GradientButton as="a" href={profile.resumeUrl} download className="px-5 py-2.5">
             <DownloadIcon className="h-4 w-4" /> Resume
           </GradientButton>
@@ -126,9 +126,9 @@ export function Navbar() {
                 ))}
               </ul>
 
-              {/* Optional fluid-cursor effect toggle (off by default on touch). */}
+              {/* Performance mode toggle. */}
               <div className="mt-2 border-t border-surface-border pt-2">
-                <FluidToggle withLabel />
+                <PerformanceToggle withLabel />
               </div>
 
               <a

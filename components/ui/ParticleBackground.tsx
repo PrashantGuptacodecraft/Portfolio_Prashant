@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { getLowPowerMode } from "@/lib/hooks/useLowPowerMode";
 
 type ParticleBackgroundProps = {
   /** Visual density multiplier (auto-reduced on small screens). */
@@ -15,9 +16,8 @@ type Particle = { x: number; y: number; vx: number; vy: number; r: number };
  *
  * Deliberately dependency-free (no tsParticles) for performance:
  *  - density scales down on mobile,
- *  - fully disabled under prefers-reduced-motion,
- *  - pauses when the tab is hidden,
- *  - connecting lines only drawn within a short distance.
+ *  - fully disabled under prefers-reduced-motion or Low Power Mode,
+ *  - pauses when the tab is hidden.
  */
 export function ParticleBackground({ density = 1, className }: ParticleBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -29,7 +29,8 @@ export function ParticleBackground({ density = 1, className }: ParticleBackgroun
     if (!ctx) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return; // Honour reduced-motion: render nothing animated.
+    const lowPower = getLowPowerMode();
+    if (reduced || lowPower) return; // Honour reduced-motion or low power: render nothing animated.
 
     let width = 0;
     let height = 0;

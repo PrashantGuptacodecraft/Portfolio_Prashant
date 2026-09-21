@@ -26,11 +26,17 @@ const CustomCursor = dynamic(
   { ssr: false },
 );
 
+import { useLowPowerMode } from "@/lib/hooks/useLowPowerMode";
+
 /**
  * Client-side visual effects shell. These are purely decorative — no content
  * that crawlers need. They load after the page is interactive.
  */
 export function VisualEffects() {
+  const [lowPower] = useLowPowerMode();
+
+  if (lowPower) return null;
+
   return (
     <>
       <SpotlightBackground />
