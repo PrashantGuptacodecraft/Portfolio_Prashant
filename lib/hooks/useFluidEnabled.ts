@@ -9,10 +9,9 @@ import { useSyncExternalStore } from "react";
  * FluidCursor, CustomCursor) can read/write it without a Context Provider — which
  * matters because the root layout is a Server Component.
  *
- * Persisted to localStorage under "fluidCursorEnabled". Default: ON for desktop
- * (fine pointer), OFF for touch-only devices to protect performance.
+ * Persisted to localStorage. Default: OFF for everyone initially to protect performance.
  */
-const KEY = "fluidCursorEnabled";
+const KEY = "pg_fluid_v2";
 
 function detectDefault(): boolean {
   // Default to OFF — the WebGL fluid sim is expensive (17+ GPU draw calls/frame).

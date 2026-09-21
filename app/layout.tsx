@@ -80,8 +80,6 @@ export default function RootLayout({
         {children}
         {/* Keyboard shortcuts: "/" focuses contact, "g h" opens GitHub. */}
         <KeyboardShortcuts />
-        {/* Site-wide film grain to soften the flat digital look. */}
-        <div className="grain-overlay" aria-hidden="true" />
         <Analytics />
       </body>
     </html>
